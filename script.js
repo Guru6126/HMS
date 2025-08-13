@@ -1,9 +1,11 @@
 // script.js
+require('dotenv').config(); // Load variables from .env
+
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Use Railway port if hosted
 
 // Middleware to parse form data
 app.use(express.urlencoded({ extended: true }));
@@ -14,12 +16,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// MySQL connection
+// MySQL connection using environment variables
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',       // replace with your MySQL password
-  database: 'hms'   // ensure this database exists
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT
 });
 
 db.connect((err) => {
@@ -27,7 +30,7 @@ db.connect((err) => {
     console.error('Database connection error:', err.message);
     return;
   }
-  console.log('Connected to MySQL database2');
+  console.log('Connected to MySQL database');
 });
 
 // Handle appointment submission
@@ -56,5 +59,5 @@ app.post('/bookAppointment', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port})`);
+  console.log(`Server running at http://localhost:${port}`);
 });
