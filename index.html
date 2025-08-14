@@ -106,7 +106,7 @@
             const data = Object.fromEntries(formData.entries());
 
             try {
-                const res = await fetch('/api/bookAppointment', {
+                const res = await fetch('/api/script', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
