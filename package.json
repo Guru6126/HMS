@@ -1,17 +1,17 @@
 {
   "name": "project-1",
   "version": "1.0.0",
-  "main": "script.js",
+  "main": "index.js",
   "scripts": {
+    "start": "vercel dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "HMS appointment app ready for Vercel deployment",
   "dependencies": {
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "mysql2": "^3.14.1"
+    "mysql2": "^3.14.1",
+    "dotenv": "^17.2.1"
   }
 }

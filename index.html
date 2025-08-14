@@ -58,10 +58,24 @@
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #result.success {
+            color: green;
+        }
+
+        #result.error {
+            color: red;
+        }
     </style>
 </head>
 <body>
-    <form action="/bookAppointment" method="post">
+    <form id="appointmentForm">
         <h2><strong>Book Appointment</strong></h2>
 
         <label for="doctorId">Doctor ID:</label>
@@ -77,7 +91,42 @@
         <input type="time" name="time" required>
 
         <input type="submit" value="Book Appointment">
+
+        <div id="result"></div>
     </form>
+
+    <script>
+        const form = document.getElementById('appointmentForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/bookAppointment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const json = await res.json();
+
+                if (res.ok) {
+                    resultDiv.textContent = json.message;
+                    resultDiv.className = 'success';
+                    form.reset();
+                } else {
+                    resultDiv.textContent = json.error || 'Error booking appointment';
+                    resultDiv.className = 'error';
+                }
+            } catch (err) {
+                resultDiv.textContent = 'Network error. Please try again.';
+                resultDiv.className = 'error';
+            }
+        });
+    </script>
 </body>
 </html>
-
